@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+
+{% block head %}
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<title> {{ title }} </title>
+	<style>
+		html {
+		  height: 100%;
+		}
+		body {
+		  margin:0;
+		  padding:0;
+		  font-family: sans-serif;
+		  background: linear-gradient(#141e30, #243b55);
+		}
+
+		.login-box {
+		  position: absolute;
+		  top: 50%;
+		  left: 50%;
+		  width: 400px;
+		  padding: 40px;
+		  transform: translate(-50%, -50%);
+		  background: rgba(0,0,0,.5);
+		  box-sizing: border-box;
+		  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+		  border-radius: 10px;
+		}
+
+		.login-box h2 {
+		  margin: 0 0 30px;
+		  padding: 0;
+		  color: #fff;
+		  text-align: center;
+		}
+
+		.login-box .user-box {
+		  position: relative;
+		}
+
+		.login-box .user-box input {
+		  width: 100%;
+		  padding: 10px 0;
+		  font-size: 16px;
+		  color: #fff;
+		  margin-bottom: 30px;
+		  border: none;
+		  border-bottom: 1px solid #fff;
+		  outline: none;
+		  background: transparent;
+		}
+		.login-box .user-box label {
+		  position: absolute;
+		  top:0;
+		  left: 0;
+		  padding: 10px 0;
+		  font-size: 16px;
+		  color: #fff;
+		  pointer-events: none;
+		  transition: .5s;
+		}
+
+		.login-box .user-box input:focus ~ label,
+		.login-box .user-box input:valid ~ label {
+		  top: -20px;
+		  left: 0;
+		  color: #03e9f4;
+		  font-size: 12px;
+		}
+
+		.login-box form a {
+		  position: relative;
+		  display: inline-block;
+		  padding: 10px 20px;
+		  color: #03e9f4;
+		  font-size: 16px;
+		  text-decoration: none;
+		  text-transform: uppercase;
+		  overflow: hidden;
+		  transition: .5s;
+		  margin-top: 40px;
+		  letter-spacing: 4px
+		}
+
+		.login-box a:hover {
+		  background: #03e9f4;
+		  color: #fff;
+		  border-radius: 5px;
+		  box-shadow: 0 0 5px #03e9f4,
+					  0 0 25px #03e9f4,
+					  0 0 50px #03e9f4,
+					  0 0 100px #03e9f4;
+		}
+
+		.login-box a span {
+		  position: absolute;
+		  display: block;
+		}
+
+		.login-box a span:nth-child(1) {
+		  top: 0;
+		  left: -100%;
+		  width: 100%;
+		  height: 2px;
+		  background: linear-gradient(90deg, transparent, #03e9f4);
+		  animation: btn-anim1 1s linear infinite;
+		}
+
+		@keyframes btn-anim1 {
+		  0% {
+			left: -100%;
+		  }
+		  50%,100% {
+			left: 100%;
+		  }
+		}
+
+		.login-box a span:nth-child(2) {
+		  top: -100%;
+		  right: 0;
+		  width: 2px;
+		  height: 100%;
+		  background: linear-gradient(180deg, transparent, #03e9f4);
+		  animation: btn-anim2 1s linear infinite;
+		  animation-delay: .25s
+		}
+
+		@keyframes btn-anim2 {
+		  0% {
+			top: -100%;
+		  }
+		  50%,100% {
+			top: 100%;
+		  }
+		}
+
+		.login-box a span:nth-child(3) {
+		  bottom: 0;
+		  right: -100%;
+		  width: 100%;
+		  height: 2px;
+		  background: linear-gradient(270deg, transparent, #03e9f4);
+		  animation: btn-anim3 1s linear infinite;
+		  animation-delay: .5s
+		}
+
+		@keyframes btn-anim3 {
+		  0% {
+			right: -100%;
+		  }
+		  50%,100% {
+			right: 100%;
+		  }
+		}
+
+		.login-box a span:nth-child(4) {
+		  bottom: -100%;
+		  left: 0;
+		  width: 2px;
+		  height: 100%;
+		  background: linear-gradient(360deg, transparent, #03e9f4);
+		  animation: btn-anim4 1s linear infinite;
+		  animation-delay: .75s
+		}
+
+		@keyframes btn-anim4 {
+		  0% {
+			bottom: -100%;
+		  }
+		  50%,100% {
+			bottom: 100%;
+		  }
+		}
+		
+
+		.navbar-inverse {
+			-webkit-transition: all 0.2s ease-in;
+			transition: all 0.2s ease-in;
+		}
+		.transparent {
+		  background: transparent;
+		}
+		
+		.flash {
+			position: relative;
+			top: 40px;
+			color: white;
+			margin: 1em 0; 
+			padding: 1em; 
+			background: #168acc; 
+			border: 1px solid #377ba8; 
+		}
+		
+		#menuToggle {
+			  display: block;
+			  position: fixed;
+			  top: 20px;
+			  left: 20px;
+			  
+			  z-index: 1;
+			  
+			  -webkit-user-select: none;
+			  user-select: none;
+			}
+
+			#menuToggle a{
+			  text-decoration: none;
+			  color: #232323;
+			  
+			  transition: color 0.3s ease;
+			}
+
+			#menuToggle a:hover{
+			  color: tomato;
+			}
+
+
+			#menuToggle input{
+			  display: block;
+			  width: 40px;
+			  height: 32px;
+			  position: absolute;
+			  top: -7px;
+			  left: -5px;
+			  
+			  cursor: pointer;
+			  
+			  opacity: 0; /* hide this */
+			  z-index: 2; /* and place it over the hamburger */
+			  
+			  -webkit-touch-callout: none;
+			}
+
+			#menuToggle span{
+			  display: block;
+			  width: 33px;
+			  height: 4px;
+			  margin-bottom: 5px;
+			  position: relative;
+			  
+			  background: #cdcdcd;
+			  border-radius: 3px;
+			  
+			  z-index: 1;
+			  
+			  transform-origin: 4px 0px;
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  opacity 0.55s ease;
+			}
+
+			#menuToggle span:first-child{
+			  transform-origin: 0% 0%;
+			}
+
+			#menuToggle span:nth-last-child(2){
+			  transform-origin: 0% 100%;
+			}
+
+			#menuToggle input:checked ~ span{
+			  opacity: 1;
+			  transform: rotate(45deg) translate(-2px, -1px);
+			  background: #232323;
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(3){
+			  opacity: 0;
+			  transform: rotate(0deg) scale(0.2, 0.2);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(2){
+			  transform: rotate(-45deg) translate(0, -1px);
+			}
+			#menu{
+			  position: absolute;
+			  width: 300px;
+			  margin: -100px 0 0 -50px;
+			  padding: 50px;
+			  padding-top: 125px;
+			  
+			  background: #ededed;
+			  list-style-type: none;
+			  -webkit-font-smoothing: antialiased;
+			  /* to stop flickering of text in safari */
+			  
+			  transform-origin: 0% 0%;
+			  transform: translate(-100%, 0);
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#menu li{
+			  padding: 10px 0;
+			  font-size: 22px;
+			}
+
+			#menuToggle input:checked ~ ul{
+			  transform: none;
+			}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.2.2/css/flat-ui.css">
+{% endblock %}
+
+{% block content %}	
+	  <nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('home.about') }}"><li><i class="fa fa-info" aria-hidden="true" style="font-size:24px;"></i>  About</li></a>
+		  <a href="{{ url_for('home.contact') }}"><li><i class="fa fa-id-card" aria-hidden="true" style="font-size:24px;"></i>  Contact</li></a>
+		  {% if title == "Log In" %}
+			<a href="{{ url_for('auth.register') }}"><li><i class="fa fa-user-plus" aria-hidden="true" style="font-size:24px;"></i>  Register</li></a>
+		  {% else %}
+			<a href="{{ url_for('auth.login') }}"><li><i class="fa fa-sign-in" style="font-size:24px;"></i>  Login</li></a>
+		  {% endif %}
+		</ul>
+	  </div>
+	</nav>
+	
+	<div class="login-box">
+		<h2>{{ title }}</h2>
+		<form method="post">
+			<div class="user-box">
+			  <input  name="username" id="username" required>
+			  <label>Username</label>
+			</div>
+			<div class="user-box">
+			  <input type="password" name="password" id="password" required>
+			  <label>Password</label>
+			</div>
+			{% if title == "Register" %}
+				<div class="user-box">
+				  <input type="password" name="rpt-password" id="rpt-password" required>
+				  <label>Repeat Password</label>
+				</div>
+			{% endif %}
+			<a>
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			  <input type="submit" value="{{ title }}" class="transparent">
+			</a>
+		</form>
+	</div>
+{% endblock %}

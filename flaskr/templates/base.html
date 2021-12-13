@@ -1,0 +1,18 @@
+<!doctype html>
+<head>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='lst.ico') }}">
+	{% block head %}{% endblock %}
+</head>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+
+<body>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
+</body>
