@@ -1,0 +1,334 @@
+<html>
+<head>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='lst.ico') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title> Contact </title>
+	<style>
+		body{
+			background-image: linear-gradient(#bdc3c7, #2c3e50);
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		
+		.center {
+		  position: relative;
+		  margin-top:8%;
+		  text-align: center;
+		  text-decoration: underline;
+		}
+
+		* {
+		  box-sizing: border-box;
+		}
+
+		/* style the container */
+		.container {
+		  position: relative;
+		  width: 97%;
+		  border-radius: 5px;
+		  background-color:#282E34;
+		  padding: 20px 0 30px 0;
+		} 
+
+		/* style inputs and link buttons */
+		input,
+		.btn {
+		  width: 100%;
+		  padding: 12px;
+		  border: none;
+		  border-radius: 4px;
+		  margin: 5px 0;
+		  opacity: 0.85;
+		  display: inline-block;
+		  font-size: 17px;
+		  line-height: 20px;
+		  text-decoration: none; /* remove underline from anchors */
+		}
+
+		input:hover,
+		.btn:hover {
+		  opacity: 1;
+		}
+
+		/* add appropriate colors to fb, twitter and google buttons */
+		.fb {
+		  background-color: #3B5998;
+		  color: white;
+		}
+
+		.twitter {
+		  background-color: #55ACEE;
+		  color: white;
+		}
+
+		.google {
+		  background-color: #dd4b39;
+		  color: white;
+		}
+
+		/* style the submit button */
+		input[type=submit] {
+		  background-color: red;
+		  color: white;
+		  cursor: pointer;
+		}
+
+		/* Two-column layout */
+		.col {
+		  float: left;
+		  width: 50%;
+		  margin: auto;
+		  padding: 0 50px;
+		  margin-top: 6px;
+		}
+
+		/* Clear floats after the columns */
+		.row:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+
+		/* vertical line */
+		.vl {
+		  position: absolute;
+		  left: 50%;
+		  transform: translate(-50%);
+		  border: 2px solid #ddd;
+		  height: 80%;
+		}
+
+		/* text inside the vertical line */
+		.vl-innertext {
+		  position: absolute;
+		  top: 50%;
+		  transform: translate(-50%, -50%);
+		  background-color: #f1f1f1;
+		  border: 1px solid #ccc;
+		  border-radius: 50%;
+		  padding: 8px 10px;
+		}
+
+		/* hide some text on medium and large screens */
+		.hide-md-lg {
+		  display: none;
+		}
+
+		/* bottom container */
+		.bottom-container {
+		  text-align: center;
+		  background-color: #666;
+		  border-radius: 0px 0px 4px 4px;
+		}
+
+		/* Responsive layout - when the screen is less than 650px wide, make the two columns stack on top of each other instead of next to each other */
+		@media screen and (max-width: 650px) {
+		  .col {
+			width: 100%;
+			margin-top: 0;
+		  }
+		  /* hide the vertical line */
+		  .vl {
+			display: none;
+		  }
+		  /* show the hidden text on small screens */
+		  .hide-md-lg {
+			display: block;
+			text-align: center;
+		  }
+		}
+		
+		p {
+			position: relative;
+			margin-top:10%;
+			text-align: center;
+		}
+			.flash {
+				position: relative;
+				top: 40px;
+				color: white;
+				margin: 1em 0; 
+				padding: 1em; 
+				background: #168acc; 
+				border: 1px solid #377ba8; 
+			}
+			
+			#menuToggle {
+			  display: block;
+			  position: fixed;
+			  top: 20px;
+			  left: 20px;
+			  
+			  z-index: 1;
+			  
+			  -webkit-user-select: none;
+			  user-select: none;
+			}
+
+			#menuToggle a{
+			  text-decoration: none;
+			  color: #232323;
+			  
+			  transition: color 0.3s ease;
+			}
+
+			#menuToggle a:hover{
+			  color: tomato;
+			}
+
+
+			#menuToggle input{
+			  display: block;
+			  width: 40px;
+			  height: 32px;
+			  position: absolute;
+			  top: -7px;
+			  left: -5px;
+			  
+			  cursor: pointer;
+			  
+			  opacity: 0; /* hide this */
+			  z-index: 2; /* and place it over the hamburger */
+			  
+			  -webkit-touch-callout: none;
+			}
+
+			#menuToggle span{
+			  display: block;
+			  width: 33px;
+			  height: 4px;
+			  margin-bottom: 5px;
+			  position: relative;
+			  
+			  background: #cdcdcd;
+			  border-radius: 3px;
+			  
+			  z-index: 1;
+			  
+			  transform-origin: 4px 0px;
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  opacity 0.55s ease;
+			}
+
+			#menuToggle span:first-child{
+			  transform-origin: 0% 0%;
+			}
+
+			#menuToggle span:nth-last-child(2){
+			  transform-origin: 0% 100%;
+			}
+
+			#menuToggle input:checked ~ span{
+			  opacity: 1;
+			  transform: rotate(45deg) translate(-2px, -1px);
+			  background: #232323;
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(3){
+			  opacity: 0;
+			  transform: rotate(0deg) scale(0.2, 0.2);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(2){
+			  transform: rotate(-45deg) translate(0, -1px);
+			}
+			#menu{
+			  position: absolute;
+			  width: 300px;
+			  margin: -100px 0 0 -50px;
+			  padding: 50px;
+			  padding-top: 125px;
+			  
+			  background: #ededed;
+			  list-style-type: none;
+			  -webkit-font-smoothing: antialiased;
+			  /* to stop flickering of text in safari */
+			  
+			  transform-origin: 0% 0%;
+			  transform: translate(-100%, 0);
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#menu li{
+			  padding: 10px 0;
+			  font-size: 22px;
+			}
+
+			#menuToggle input:checked ~ ul{
+			  transform: none;
+			}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.2.2/css/flat-ui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+	<nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('home.about') }}"><li>&nbsp;<i class="fa fa-info" aria-hidden="true" style="font-size:24px;"></i>  About</li></a>
+		  {% if g.user %}
+			{% if g.user['rank'] == 2 %}
+			<a href="{{ url_for('schedule.index') }}"><li><i class="fa fa-list-alt" aria-hidden="true" style="font-size:24px;"></i>  Schedule</li></a>
+			{% else %}
+			<a href="{{ url_for('admin.index') }}"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin Page</li></a>
+			<a href="{{ url_for('admin.schedule') }}"><li><i class="fa fa-list-alt" aria-hidden="true" style="font-size:24px;"></i>  Schedule</li></a>
+			{% endif %}
+			<a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+			{% else %}
+			<a href="{{ url_for('auth.register') }}"><li><i class="fa fa-user-plus" aria-hidden="true" style="font-size:24px;"></i>  Register</li></a>
+			<a href="{{ url_for('auth.login') }}"><li><i class="fa fa-sign-in" aria-hidden="true" style="font-size:24px;"></i>  Login</li></a>
+			{% endif %}
+		</ul>
+	  </div>
+	</nav>
+	
+	<h1 class="center"><i class="fa fa-id-card" aria-hidden="true"></i>    Contact </h1>
+	<p>
+	this is the paragraph: contact information
+	</p>
+	
+	<div class="container">
+	  <form method="post">
+		<div class="row">
+		  <div class="vl"> </div>
+
+		  <div class="col">
+			<p style="color:white; font-size: 45px;">&nbsp;</p>
+			<a href="#fb" class="fb btn">
+			  <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+			 </a>
+			<a href="#tw" class="twitter btn">
+			  <i class="fa fa-twitter fa-fw"></i> Login with Twitter
+			</a>
+			<a href="#gp" class="google btn"><i class="fa fa-google fa-fw">
+			  </i> Login with Google+
+			</a>
+			
+		  </div>
+
+		  <div class="col"><br>
+			<div class="hide-md-lg">
+			  <p>Or email me directly:</p>
+			</div>
+			<p style="color:white; font-size: 25px;"> Email me: </p>
+			<input type="email" name="email" placeholder="Email" required>
+			<input type="text" name="subject" placeholder="Subject" required>
+			<input type="submit" value="Send" onclick="alert('thank you for contacting the developer. he will be referring to your request shortly')">
+		  </div>
+		  
+		</div>
+	  </form>
+	</div>
+</body>
+</html>

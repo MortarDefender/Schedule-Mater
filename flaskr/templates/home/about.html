@@ -1,0 +1,217 @@
+<html>
+<head>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='lst.ico') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<title> About </title>
+	<style>
+		body{
+			background-image: linear-gradient(#bdc3c7, #2c3e50);
+		}
+		.navbar-inverse {
+			-webkit-transition: all 0.2s ease-in;
+			transition: all 0.2s ease-in;
+		}
+		.transparent {
+		  background: transparent;
+		}
+		.center {
+		  position: relative;
+		  margin-top:8%;
+		  text-align: center;
+		  text-decoration: underline;
+		}
+		p {
+			position: relative;
+			margin-top:10%;
+			text-align: center;
+		}
+		.footer {
+			position: fixed;
+		    left: 0;
+		    bottom: 0;
+			display: inline-block;
+		    width: 100%;
+		}
+		.footer a{color: #fff;}
+		input,
+			.btn {
+			  width: 50%;
+			  padding: 12px;
+			  border: none;
+			  border-radius: 4px;
+			  margin: 5px 0;
+			  opacity: 0.85;
+			  display: inline-block;
+			  font-size: 17px;
+			  line-height: 20px;
+			  text-decoration: none;
+			}
+
+			input:hover,
+			.btn:hover {
+			  opacity: 1;
+			}
+
+			/* style the submit button */
+			input[type=submit] {
+			  width: 50%;
+			  background-color: #f00;
+			  color: white;
+			  cursor: pointer;
+			}
+			
+			#menuToggle {
+			  display: block;
+			  position: fixed;
+			  top: 20px;
+			  left: 20px;
+			  
+			  z-index: 1;
+			  
+			  -webkit-user-select: none;
+			  user-select: none;
+			}
+
+			#menuToggle a{
+			  text-decoration: none;
+			  color: #232323;
+			  
+			  transition: color 0.3s ease;
+			}
+
+			#menuToggle a:hover{
+			  color: tomato;
+			}
+
+
+			#menuToggle input{
+			  display: block;
+			  width: 40px;
+			  height: 32px;
+			  position: absolute;
+			  top: -7px;
+			  left: -5px;
+			  
+			  cursor: pointer;
+			  
+			  opacity: 0; /* hide this */
+			  z-index: 2; /* and place it over the hamburger */
+			  
+			  -webkit-touch-callout: none;
+			}
+
+			#menuToggle span{
+			  display: block;
+			  width: 33px;
+			  height: 4px;
+			  margin-bottom: 5px;
+			  position: relative;
+			  
+			  background: #cdcdcd;
+			  border-radius: 3px;
+			  
+			  z-index: 1;
+			  
+			  transform-origin: 4px 0px;
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  opacity 0.55s ease;
+			}
+
+			#menuToggle span:first-child{
+			  transform-origin: 0% 0%;
+			}
+
+			#menuToggle span:nth-last-child(2){
+			  transform-origin: 0% 100%;
+			}
+
+			#menuToggle input:checked ~ span{
+			  opacity: 1;
+			  transform: rotate(45deg) translate(-2px, -1px);
+			  background: #232323;
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(3){
+			  opacity: 0;
+			  transform: rotate(0deg) scale(0.2, 0.2);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(2){
+			  transform: rotate(-45deg) translate(0, -1px);
+			}
+			#menu{
+			  position: absolute;
+			  width: 300px;
+			  margin: -100px 0 0 -50px;
+			  padding: 50px;
+			  padding-top: 125px;
+			  
+			  background: #ededed;
+			  list-style-type: none;
+			  -webkit-font-smoothing: antialiased;
+			  /* to stop flickering of text in safari */
+			  
+			  transform-origin: 0% 0%;
+			  transform: translate(-100%, 0);
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#menu li{
+			  padding: 10px 0;
+			  font-size: 22px;
+			}
+
+			#menuToggle input:checked ~ ul{
+			  transform: none;
+			}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.2.2/css/flat-ui.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+	<nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('home.contact') }}"><li><i class="fa fa-id-card" aria-hidden="true" style="font-size:24px;"></i>  Contact</li></a>
+		  {% if g.user %}
+			{% if g.user['rank'] == 2 %}
+			<a href="{{ url_for('schedule.index') }}"><li><i class="fa fa-list-alt" aria-hidden="true" style="font-size:24px;"></i>  Schedule</li></a>
+			{% else %}
+			<a href="{{ url_for('admin.index') }}"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin Page</li></a>
+			<a href="{{ url_for('admin.schedule') }}"><li><i class="fa fa-list-alt" aria-hidden="true" style="font-size:24px;"></i>  Schedule</li></a>
+			{% endif %}
+			<a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+			{% else %}
+			<a href="{{ url_for('auth.register') }}"><li><i class="fa fa-user-plus" aria-hidden="true" style="font-size:24px;"></i>  Register</li></a>
+			<a href="{{ url_for('auth.login') }}"><li><i class="fa fa-sign-in" aria-hidden="true" style="font-size:24px;"></i>  Login</li></a>
+			{% endif %}
+		</ul>
+	  </div>
+	</nav>
+	
+	<h1 class="center"> Lets Start With A Story Shall WE... </h1>
+	<p>
+	this is the peregraph: About the Developer
+	</p>
+
+	<div class="footer" id="footer">
+		  <div style="color:#fff;background-color:#282E34;text-align:center;padding:20px 60px;text-align: justify;">
+			<p style="text-align:center; text-transform: capitalize; font-size:20px;">contact me in: <a href="#facebook"><i style="font-size:20px; padding:8px;" class="fa">&#xf09a;</i></a> <a href="#twitter"><i style="font-size:20px; padding:8px;" class="fa">&#xf099;</i></a> <a href="#instegram"><i style="font-size:20px; padding:8px;" class="fa">&#xf16d;</i></a> <a href="#linkedin"><i style="font-size:20px; padding:8px;" class="fa">&#xf08c;</i></a>
+			<a href="#nav"></a>
+		  </div>
+		</div>
+</body>
+</html>
