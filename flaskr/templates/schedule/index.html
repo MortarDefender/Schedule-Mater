@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <style>
+	body {
+			  font-family: 'Open Sans', sans-serif;
+			  font-weight: 300;
+			  line-height: 1.42em;
+			  color:#A7A1AE;
+			  background-color:#1F2739;
+			}
+			h1 {
+			  font-size:3em;
+			  font-weight: 300;
+			  line-height:1em;
+			  text-align: center;
+			  color: #4DC3FA;
+			}
+
+			h2 {
+			  font-size:3em;
+			  font-weight: 300;
+			  font-weight: bold;
+			  line-height:1em;
+			  text-align: center;
+			  color: white;
+			}
+			nav {  display: flex; text-align: left; padding: 0 0.5rem; }
+			nav h1 { flex: auto; margin: 0; }
+			nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
+			nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
+			nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
+			
+			.container th h1 {
+				  font-weight: bold;
+				  font-size: 1em;
+			  color: #185875;
+			}
+
+			.container td {
+				  font-weight: normal;
+				  font-size: 0.8em;
+			  -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+				   -moz-box-shadow: 0 2px 2px -2px #0E1119;
+						box-shadow: 0 2px 2px -2px #0E1119;
+			}
+
+			.container {
+				  text-align: center;
+				  overflow: hidden;
+				  text-overflow: clip;
+				  width: 100%;
+				  margin: 0 auto;
+			  display: table;
+			  padding: 0 0 8em 0;
+			}
+
+			.container .shift {
+				width: 12.5%;
+			}
+
+			.container td, .container th {
+				  padding-bottom: 2%;
+				  padding-top: 2%;
+			  padding-left:2%;
+			}
+
+			/* Background-color of the odd rows */
+			.container tr:nth-child(odd) {
+				  background-color: #323C50;
+			}
+
+			/* Background-color of the even rows */
+			.container tr:nth-child(even) {
+				  background-color: #2C3446;
+			}
+
+			.container th {
+				  background-color: #1F2739;
+			}
+
+			.container tr:hover {
+			   background-color: #464A52;
+			-webkit-box-shadow: 0 6px 6px -6px #0E1119;
+				   -moz-box-shadow: 0 6px 6px -6px #0E1119;
+						box-shadow: 0 6px 6px -6px #0E1119;
+			}
+
+			.container td:hover {
+			  background-color: #FFF842;
+			  color: #403E10;
+			  font-weight: bold;
+
+			  box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;
+			  transform: translate3d(6px, -6px, 0);
+
+			  transition-delay: 0s;
+				  transition-duration: 0.4s;
+				  transition-property: all;
+			  transition-timing-function: line;
+			}
+
+			@media (max-width: 800px) {
+			.container td:nth-child(4),
+			.container th:nth-child(4) { display: none; }
+			}
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+	function check_shift(shift, date, id){
+		$.ajax(
+			{ url: '/schedule/create_shift/' + shift + '/' + date + "/check",
+			 success: function(data){
+				if (data['db'] == "None"){
+					document.getElementById(id).style.color = "grey";
+					document.getElementById(id).innerHTML = "empty";
+				}else{
+					document.getElementById(id).style.color = "red";
+					document.getElementById(id).innerHTML = "blocked by " + "{{ g.user['username'] }}";
+				}
+			}
+		});
+	}
+	
+    function create(shift, date, id){
+		var status = document.getElementById(id).textContent;
+		$.ajax({ url: '/schedule/create_shift/' + shift + '/' + date  + "/handle"});
+		if (status == "blocked by " + "{{ g.user['username'] }}"){
+			document.getElementById(id).style.color = "grey";
+			document.getElementById(id).innerHTML = "empty";
+		}else{
+			document.getElementById(id).style.color = "red";
+			document.getElementById(id).innerHTML = "blocked by " + "{{ g.user['username'] }}";
+		}
+    }
+	
+  </script>
+{% endblock %}
+
+{% block header %}
+  <h1 style="text-align: center;">{% block title %}Schedule{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <table class="container">
+    <tr>
+      <th><h1>_________</h1></th>
+      {% for date in days %}
+        <th><h1>{{ date }}</h1></th>
+      {% endfor %}
+    </tr>
+    {% for i in range %}
+    <tr>
+      <td class="shift" style="text-align: center;">{{ table[i] }}</td>
+      {% for j in range2 %}
+        <td class="square{{ i }}{{ j }}" style="text-align: center;" 
+		  onclick="create('{{ table[i] }}',
+          '{{ days[j].replace('\r\n', ' ') }}',
+          'p{{ i }}{{ j }}')">
+          <p id="p{{ i }}{{ j }}">{{ j + 1 }}</p>
+		  </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
