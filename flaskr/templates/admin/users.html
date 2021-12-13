@@ -1,0 +1,436 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='lst.ico') }}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<style>
+		* {
+		  margin: 0;
+		  padding: 0;
+		  -webkit-box-sizing: border-box;
+		  -moz-box-sizing: border-box;
+		  box-sizing: border-box;
+		}
+
+		body {
+		  margin: 0;
+		  padding: 0;
+		  background: #2d2c41;
+		  font-family: 'Open Sans', Arial, Helvetica, Sans-serif, Verdana, Tahoma;
+		}
+
+		ul { list-style-type: none; }
+
+		a {
+		  color: white;
+		  font-size: 20px;
+		  margin-right: 10px;
+		  text-decoration: none;
+		}
+		
+		.div_add {
+			display: inline;
+		}
+		
+		.div_add h1 {
+		  color: #FFF;
+		  font-size: 36px;
+		  font-weight: 400;
+		  text-align: center;
+		  margin-top: 80px;
+		}
+
+		.add {
+		  position: absolute;
+		  right: 10%;
+		  top: 80px;
+		  color: white;
+		  font-size: 36px;
+		  z-index: 1;
+		}
+
+		.accordion {
+		  width: 100%;
+		  max-width: 75%;
+		  margin: 30px auto 20px;
+		  background: #FFF;
+		  -webkit-border-radius: 4px;
+		  -moz-border-radius: 4px;
+		  border-radius: 4px;
+		}
+
+		.accordion .link {
+		  cursor: pointer;
+		  display: block;
+		  padding: 15px 15px 15px 42px;
+		  color: #4D4D4D;
+		  font-size: 14px;
+		  font-weight: 700;
+		  border-bottom: 1px solid #CCC;
+		  position: relative;
+		  -webkit-transition: all 0.4s ease;
+		  -o-transition: all 0.4s ease;
+		  transition: all 0.4s ease;
+		}
+
+		.accordion li:last-child .link { border-bottom: 0; }
+
+		.accordion li i {
+		  position: absolute;
+		  top: 16px;
+		  left: 12px;
+		  font-size: 18px;
+		  color: #595959;
+		  -webkit-transition: all 0.4s ease;
+		  -o-transition: all 0.4s ease;
+		  transition: all 0.4s ease;
+		}
+		
+		
+		.accordion li i.fa-chevron-down {
+		  right: 12px;
+		  left: auto;
+		  font-size: 16px;
+		}
+
+		.accordion li.open .link { color: #b63b4d; }
+
+		.accordion li.open i { color: #b63b4d; }
+
+		.accordion li.open i.fa-chevron-down {
+		  -webkit-transform: rotate(180deg);
+		  -ms-transform: rotate(180deg);
+		  -o-transform: rotate(180deg);
+		  transform: rotate(180deg);
+		}
+
+		.submenu {
+		  display: none;
+		  background: #444359;
+		  font-size: 14px;
+		}
+
+		.submenu li { border-bottom: 1px solid #4b4a5e; }
+
+		.submenu a {
+		  display: block;
+		  text-decoration: none;
+		  color: #d9d9d9;
+		  padding: 12px;
+		  padding-left: 42px;
+		  -webkit-transition: all 0.25s ease;
+		  -o-transition: all 0.25s ease;
+		  transition: all 0.25s ease;
+		}
+		
+		.submenu .fa-trash-o {
+			display: block;
+			text-decoration: none;
+			color: #d9d9d9;
+			padding: 12px;
+			padding-left: 42px;
+			-webkit-transition: all 0.25s ease;
+			-o-transition: all 0.25s ease;
+			transition: all 0.25s ease;
+		}
+		
+		.submenu a:hover {
+		  background: #b63b4d;
+		  color: #FFF;
+		}
+		
+		#menuToggle {
+		  display: block;
+		  position: fixed;
+		  top: 20px;
+		  left: 20px;
+		  
+		  z-index: 1;
+		  
+		  -webkit-user-select: none;
+		  user-select: none;
+		}
+
+		#menuToggle a{
+		  text-decoration: none;
+		  color: #232323;
+		  
+		  transition: color 0.3s ease;
+		}
+
+		#menuToggle a:hover{
+		  color: tomato;
+		}
+
+
+		#menuToggle input{
+		  display: block;
+		  width: 40px;
+		  height: 32px;
+		  position: absolute;
+		  top: -7px;
+		  left: -5px;
+		  
+		  cursor: pointer;
+		  
+		  opacity: 0; /* hide this */
+		  z-index: 2; /* and place it over the hamburger */
+		  
+		  -webkit-touch-callout: none;
+		}
+
+		#menuToggle span{
+		  display: block;
+		  width: 33px;
+		  height: 4px;
+		  margin-bottom: 5px;
+		  position: relative;
+		  
+		  background: #cdcdcd;
+		  border-radius: 3px;
+		  
+		  z-index: 1;
+		  
+		  transform-origin: 4px 0px;
+		  
+		  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+					  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+					  opacity 0.55s ease;
+		}
+
+		#menuToggle span:first-child{
+		  transform-origin: 0% 0%;
+		}
+
+		#menuToggle span:nth-last-child(2){
+		  transform-origin: 0% 100%;
+		}
+
+		#menuToggle input:checked ~ span{
+		  opacity: 1;
+		  transform: rotate(45deg) translate(-2px, -1px);
+		  background: #232323;
+		}
+
+		#menuToggle input:checked ~ span:nth-last-child(3){
+		  opacity: 0;
+		  transform: rotate(0deg) scale(0.2, 0.2);
+		}
+		
+		#menuToggle input:checked ~ span:nth-last-child(2){
+		  transform: rotate(-45deg) translate(0, -1px);
+		}
+		#menu{
+		  position: absolute;
+		  width: 300px;
+		  margin: -100px 0 0 -50px;
+		  padding: 50px;
+		  padding-top: 125px;
+		  
+		  background: #ededed;
+		  list-style-type: none;
+		  -webkit-font-smoothing: antialiased;
+		  /* to stop flickering of text in safari */
+		  
+		  transform-origin: 0% 0%;
+		  transform: translate(-100%, 0);
+		  
+		  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+		}
+
+		#menu li{
+		  padding: 10px 0;
+		  font-size: 22px;
+		}
+
+		#menuToggle input:checked ~ ul{
+		  transform: none;
+		}
+		
+		body.swal2-shown > [aria-hidden="true"] {
+			 filter: blur(10px);
+		}
+
+		body > * {
+			 transition: 0.1s filter linear;
+		}
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script>
+		$(function() {
+			var Accordion = function(el, multiple) {
+				this.el = el || {};
+				this.multiple = multiple || false;
+
+				var links = this.el.find('.link');
+				links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+			}
+
+			Accordion.prototype.dropdown = function(e) {
+				var $el = e.data.el;
+					$this = $(this),
+					$next = $this.next();
+
+				$next.slideToggle();
+				$this.parent().toggleClass('open');
+
+				if (!e.data.multiple) {
+					$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+				};
+			}	
+
+			var accordion = new Accordion($('#accordion'), false);
+		});
+		
+		function alert_add_user(){
+			(async () => {
+				const { value: formValues } = await Swal.fire({
+				  title: '<strong style="color: white;">Add User:</strong>',
+				  background: "linear-gradient(#150f96, #5f5c9c)",
+				  html:
+					'<label style="color: white;"><i class="fa fa-user-circle-o"></i> Username:</label><input type="text" id="swal-input1" name="username" class="swal2-input" style="color: white;" required>' + 
+					'<label style="color: white;"><i class="fa fa-key"></i>  Password:</label><input type="password" id="swal-input2" name="password" style="color: white;" class="swal2-input">' +
+					'<label style="color: white;"><i class="fa fa-key"></i>  Repeat Password:</label><input type="password" id="swal-input3" name="rpt_password" style="color: white;" class="swal2-input">' +
+				  '<label style="color: white;"><i class="fa fa-angle-double-up"></i>  Permission:</label><select id="swal-input4" name="rank" class="swal2-input" style="color: white;"><option value="user" style="color: black;">User</option><option value="admin" style="color: black;">Admin</option></select>',
+				  focusConfirm: false,
+				  preConfirm: () => {
+					let formValues = [
+					  document.getElementById('swal-input1').value,
+					  document.getElementById('swal-input2').value,
+					  document.getElementById('swal-input3').value,
+					  document.getElementById('swal-input4').value
+					]
+					
+					return $.post('{{ url_for("admin.create") }}', {
+						username: $(formValues)[0],
+						password: $(formValues)[1],
+						rpt_password: $(formValues)[2],
+						rank: $(formValues)[3]}, function(){location.reload(true);});
+				  }
+				})
+			})()
+		}
+	</script>
+	<title>Users</title>
+</head>
+<body>
+	<nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('admin.index') }}"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin Page</li></a>
+		  <a href="{{ url_for('admin.schedule') }}"><li><i class="fa fa-list-alt" style="font-size:24px;"></i>  Schedule</li></a>
+		  <a href="{{ url_for('admin.settings') }}"><li><i class="fa fa-cog" aria-hidden="true" style="font-size:24px;"></i>  Settings</li></a>
+		  {% if g.user['rank'] == 0 %}
+			<a href="{{ url_for('admin.log') }}"><li><i class="fa fa-file-text-o" aria-hidden="true" style="font-size:24px;"></i>  Log File</li></a>
+		  {% endif %}
+		  <a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+		</ul>
+	  </div>
+	</nav>
+	
+	<div class="div_add">
+		<!--<a class="add" href="{{ url_for('admin.create') }}">-->
+		<h1><i class="fa fa-users" aria-hidden="true" style="font-size:36px;"></i>  Users <i class="fa fa-user-plus add" style="font-size:36px;" onclick="alert_add_user()"></i></h1>
+		
+	</div>
+	<ul id="accordion" class="accordion">
+	{% for user in users %}
+	  <li>
+		<div class="link">
+			{% if user['rank'] == 0 %}
+				<i class="fa fa-user-secret"></i>
+			{% elif user['rank'] == 1 %}
+				<i class="fa fa-users"></i>
+			{% else %}
+				<i class="fa fa-user-circle-o"></i>
+			{% endif %}
+			{{ user['username'] }}<i class="fa fa-chevron-down"></i></div>
+		<ul class="submenu">
+		  <li><a href="#">Id: {{ user['id'] }}</a></li>
+		  <li><a href="#">Password: user['password']</a></li>
+		  {% if user['rank'] == 0 %}
+			<li><a href="#">Rank: superuser</a></li>
+		  {% elif user['rank'] == 1 %}
+			<li><a href="#">Rank: admin</a></li>
+		  {% else %}
+			<li><a href="#">Rank: user</a></li>
+		  {% endif%}
+		  {% if user['rank'] != 0 and user['id'] != g.user['id'] %}
+			  <li>
+				<table style="width:100%;">
+					<script>
+						async function alert_edit_user(){
+							Swal.fire({
+								  title: '<strong style="color: white;">Edit "{{ user["username"] }}":</strong>',
+								  background: "linear-gradient(#0f0c29, #302b63, #24243e)",
+								  html:
+									'<label style="color: white;"><i class="fa fa-user-circle-o"></i> Username:</label><input type="text" id="swal-input1" name="username" class="swal2-input" value="{{ user["username"] }}" style="color: white;" required>' + 
+									'<label style="color: white;"><i class="fa fa-key"></i>  Password:</label><input type="password" id="swal-input2" name="password" style="color: white;" class="swal2-input">' +
+									'<label style="color: white;"><i class="fa fa-key"></i>  Repeat Password:</label><input type="password" id="swal-input3" name="rpt_password" style="color: white;" class="swal2-input">' +
+								  '<label style="color: white;"><i class="fa fa-angle-double-up"></i>  Permission:</label><select id="swal-input4" name="rank" class="swal2-input" style="color: white;"><option value="user" style="color: black;">User</option><option value="admin" style="color: black;">Admin</option></select>',
+								  focusConfirm: false,
+								  showCancelButton: true,
+								  confirmButtonText: 'Submit',
+								  cancelButtonText: 'Denie',
+								  preConfirm: () => {
+									let formValues = [
+									  document.getElementById('swal-input1').value,
+									  document.getElementById('swal-input2').value,
+									  document.getElementById('swal-input3').value,
+									  document.getElementById('swal-input4').value
+									]
+									
+									return $.post("{{ url_for('admin.update', id=user['id']) }}", {
+											username: $(formValues)[0],
+											password: $(formValues)[1],
+											rpt_password: $(formValues)[2],
+											rank: $(formValues)[3]}, function(){location.reload(true);});
+								  }
+								}
+							)
+						}
+						async function del_user(){
+							Swal.fire({
+								title: '<strong style="color: white;">Delete "{{ user["username"] }}":</strong>',
+								background: "linear-gradient(#373B44, #4286f4)",
+								html:
+									'<h3 style="color: white;">Are you Sure you want to delete "{{ user["username"] }}" from the user list?</h3>',
+								showCancelButton: true,
+								focusConfirm: false,
+								confirmButtonText: 'Yes',
+								cancelButtonText: 'No'
+							}).then((result) => {
+								if (result.isConfirmed) {
+									$.post("{{ url_for('admin.delete', id=user['id']) }}", {});
+									Swal.fire('Saved!');
+									location.reload(true);
+									
+								}
+							})
+						}
+						
+					</script>
+					<tr>
+						<td><a onclick="alert_edit_user()" style="text-align:center; color: #45a247;">Edit</a></td>
+						<td><a onclick="del_user()" style="text-align:center; color: #c31432;">Delete</a></td>
+					</tr>
+				</table>
+			  </li>
+		  {% endif %}
+		</ul>
+	  </li>
+	  {% endfor %}
+	</ul>
+</body>
+</html>

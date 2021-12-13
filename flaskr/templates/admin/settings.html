@@ -1,0 +1,299 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<style>
+			html, body {
+			  height: 100%;
+			  margin: 0;
+			}
+			body {
+			  background-image: url("https://images.hdqwalls.com/wallpapers/dark-abstract-pattern-4k-93.jpg"); // background: #323c41;
+			  display: -webkit-box;
+			  display: -ms-flexbox;
+			  display: box;
+			  display: flex;
+			  -webkit-box-orient: vertical;
+			  -o-box-orient: vertical;
+			  flex-direction: column;
+			  -webkit-box-pack: center;
+			  -o-box-pack: center;
+			  justify-content: center;
+			  -webkit-box-align: center;
+			  -o-box-align: center;
+			  align-items: center;
+			}
+			.container {
+			  width: 800px;
+			  height: 600px;
+			  position: relative;
+			  -webkit-perspective: 800px;
+			  -ms-perspective: 800px;
+			  perspective: 800px;
+			  border-radius: 4px;
+			}
+			.card {
+			  width: 100%;
+			  height: 100%;
+			  position: absolute;
+			  -webkit-transform-style: preserve-3d;
+			  transform-style: preserve-3d;
+			  -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			  transition: -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			  border-radius: 6px;
+			  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+			  // cursor: pointer;
+			}
+			.card div {
+			  position: absolute;
+			  width: 100%;
+			  height: 100%;
+			  -webkit-backface-visibility: hidden;
+			  backface-visibility: hidden;
+			  border-radius: 6px;
+			  background-image: url("https://www.setaswall.com/wp-content/uploads/2017/03/Patterns-4K-Ultra-HD-Wallpaper-3840x2160.jpg");
+			  // background-color: #0b8793;
+			  background-size: 200% 200%;
+			  display: -webkit-box;
+			  display: -ms-flexbox;
+			  display: box;
+			  display: flex;
+			  -webkit-box-pack: center;
+			  -o-box-pack: center;
+			  justify-content: center;
+			  -webkit-box-align: center;
+			  -o-box-align: center;
+			  align-items: center;
+			  font: 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+			  -webkit-font-smoothing: antialiased;
+			  color: #47525d;
+			}
+			.card .back {
+			  -webkit-transform: rotateY(180deg);
+			  transform: rotateY(180deg);
+			  color: white;
+			}
+			.card.flipped {
+			  -webkit-transform: rotateY(180deg);
+			  transform: rotateY(180deg);
+			}
+		
+			#menuToggle {
+			  display: block;
+			  position: fixed;
+			  top: 20px;
+			  left: 20px;
+			  
+			  z-index: 1;
+			  
+			  -webkit-user-select: none;
+			  user-select: none;
+			}
+
+			#menuToggle a{
+			  text-decoration: none;
+			  color: #232323;
+			  
+			  transition: color 0.3s ease;
+			}
+
+			#menuToggle a:hover{
+			  color: tomato;
+			}
+
+
+			#menuToggle input{
+			  display: block;
+			  width: 40px;
+			  height: 32px;
+			  position: absolute;
+			  top: -7px;
+			  left: -5px;
+			  
+			  cursor: pointer;
+			  
+			  opacity: 0; /* hide this */
+			  z-index: 2; /* and place it over the hamburger */
+			  
+			  -webkit-touch-callout: none;
+			}
+
+			#menuToggle span{
+			  display: block;
+			  width: 33px;
+			  height: 4px;
+			  margin-bottom: 5px;
+			  position: relative;
+			  
+			  background: #cdcdcd;
+			  border-radius: 3px;
+			  
+			  z-index: 1;
+			  
+			  transform-origin: 4px 0px;
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  opacity 0.55s ease;
+			}
+
+			#menuToggle span:first-child{
+			  transform-origin: 0% 0%;
+			}
+
+			#menuToggle span:nth-last-child(2){
+			  transform-origin: 0% 100%;
+			}
+
+			#menuToggle input:checked ~ span{
+			  opacity: 1;
+			  transform: rotate(45deg) translate(-2px, -1px);
+			  background: #232323;
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(3){
+			  opacity: 0;
+			  transform: rotate(0deg) scale(0.2, 0.2);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(2){
+			  transform: rotate(-45deg) translate(0, -1px);
+			}
+			#menu{
+			  position: absolute;
+			  width: 300px;
+			  margin: -100px 0 0 -50px;
+			  padding: 50px;
+			  padding-top: 125px;
+			  
+			  background: #ededed;
+			  list-style-type: none;
+			  -webkit-font-smoothing: antialiased;
+			  /* to stop flickering of text in safari */
+			  
+			  transform-origin: 0% 0%;
+			  transform: translate(-100%, 0);
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#menu li{
+			  padding: 10px 0;
+			  font-size: 22px;
+			}
+
+			#menuToggle input:checked ~ ul{
+			  transform: none;
+			}
+		
+			@media all and (max-width: 410px) {
+			  .window {
+				width: 100%;
+				min-width: 270px;
+			  }
+			}
+			
+			@media (max-width: 800px) {
+				.container {
+				  width: 80%;
+				  height: 45%;
+				}
+				h2{ font-size: 25px; }
+				.front a{ font-size: 14px; }
+				.swal2-input{ 
+					font-size: 12px;
+					max-height: 30px;
+					max-width: 100px;
+				}
+			}
+
+	</style>
+</head>
+
+<body>
+	<nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('admin.index') }}"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin Page</li></a>
+		  <a href="{{ url_for('admin.users') }}"><li><i class="fa fa-users" style="font-size:24px;"></i>  Users</li></a>
+		  <a href="{{ url_for('admin.schedule') }}"><li><i class="fa fa-list-alt" aria-hidden="true" style="font-size:24px;"></i>  Schedule</li></a>
+		  {% if g.user['rank'] == 0 %}
+			<a href="{{ url_for('admin.log') }}"><li><i class="fa fa-file-text-o" aria-hidden="true" style="font-size:24px;"></i>  Log File</li></a>
+		  {% endif %}
+		  <a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+		</ul>
+	  </div>
+	</nav>
+
+	<div class="container">
+	  <h2 style="color: white;">Settings Page:</h2>
+	  <div class="card">
+		<div class="front">
+			<form method="post">
+				<table>
+					<tr>
+						<td style="padding-left: 10px;"><h3><a href="#1" style="color: white; text-decoration: none;"># Start Day</a></h3></td>
+						<td style="padding-right: 10px; padding-left: 10px;">
+							<select id="swal-input1" name="start_day" class="swal2-input" style="color: white;">
+								<option value="Sun" style="color: black;">Sunday</option>
+								<option value="Mon" style="color: black;">Monday</option>
+								<option value="Tue" style="color: black;">Tuesday</option>
+								<option value="Wed" style="color: black;">Wednesday</option>
+								<option value="Thu" style="color: black;">Thursday</option>
+								<option value="Fri" style="color: black;">Friday</option>
+								<option value="Sat" style="color: black;">Saturday</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="padding-left: 10px;"><h3><a href="#1" style="color: white; text-decoration: none;"># Amount of days to see at once</a></h3></td>
+						<td style="padding-right: 10px; padding-left: 10px;"><input class="swal2-input" type="number" value="{{ variables[1] }}" name="days_amount" 
+						min="7" step="7" max="21" style="color: white;"></td>
+					</tr>
+					<tr>
+						<td style="padding-left: 10px;"><h3><a href="#1" style="color: white; text-decoration: none;"># Hours in one shift</a></h3></td>
+						<td style="padding-right: 10px; padding-left: 10px;"><input class="swal2-input" type="number" value="{{ variables[2] }}" 
+						min="2" max="12" step="2" name="shift_time" style="color: white;"></td>
+					</tr>
+					<tr>
+						<td style="padding-left: 10px;"><h3><a href="#1" style="color: white; text-decoration: none;"># Minimum amount of shifts to block</a></h3></td>
+						<td style="padding-right: 10px; padding-left: 10px;"><input class="swal2-input" type="number" value="{{ variables[3] }}" name="min_block" 
+						min="{{ minimum_shift_block }}" max="{{ maximum_shift_block }}" style="color: white;"></td>
+					</tr>
+					<tr>
+						<td style="padding-left: 10px;"><h3><a href="#1" style="color: white; text-decoration: none;"># Maximum amount of shifts to block&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></h3></td>
+						<td style="padding-right: 10px; padding-left: 10px;"><input class="swal2-input" type="number" value="{{ variables[4] }}" name="max_block" 
+						min="1" max="{{ maximum_shift_block }}" style="color: white;"></td>
+					</tr>
+					<tr> 
+						<td></td>
+						<td style="padding-right: 10px; padding-left: 10px;"><input class="swal2-input" type="submit" value="Save" 
+						style="color: white; float:right;"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<!-- <div class="back">Yo, what up?</div> -->
+	  </div>
+	</div>
+	
+	<!-- <script>
+		$('.container').on('click', function () {
+		  $('.card').toggleClass('flipped');
+		});
+	</script> -->
+</body>
+</html>

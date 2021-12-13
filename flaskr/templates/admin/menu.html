@@ -1,0 +1,444 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='lst.ico') }}">
+	<style>
+		body {
+		  background-color: #282a2d;
+		  background-image: url('https://i.imgsafe.org/6c147abfa3.jpg');
+		  background-repeat: repeat;
+		  color: white;
+		  font-family: 'Oswald', sans-serif;
+		  letter-spacing: 0.2rem;
+		  margin: 0;
+		  overflow: hidden;
+		  perspective: 1000px;
+		  text-transform: uppercase;
+		}
+		.site-wrap {
+		  transition: transform 0.6s cubic-bezier(0.55, 0, 0.1, 1);
+		}
+		.site-wrap.show-all {
+		  transform: rotateY(-15deg) scale(0.2);
+		}
+		.panel-wrap {
+		  height: 100vh;
+		  width: 100vw;
+		}
+		h1 {
+		  font-size: 20vmin;
+		  margin: 0;
+		}
+		.panel-wrap {
+		  perspective: 2000px;
+		  transition: transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		}
+		.panel-wrap.animate--shrink,
+		.panel-wrap.animate--tilt,
+		.panel-wrap.animate--tilt2 {
+		  transition: transform 0.3s cubic-bezier(0.55, 0, 0.1, 1) 0.3s;
+		}
+		.panel {
+		  height: 100vh;
+		  position: absolute;
+		  transition: transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		  width: 100vw;
+		  will-change: transform;
+		}
+		.panel:before {
+		  background-color: transparent;
+		  bottom: 0;
+		  content: "";
+		  left: 0;
+		  pointer-events: none;
+		  position: absolute;
+		  right: 0;
+		  top: 0;
+		  transition: background-color 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		  z-index: 2;
+		}
+		.show-all .panel:before {
+		  pointer-events: all;
+		}
+		.show-all .panel:hover:before {
+		  background-color: rgba(255, 255, 255, 0.1);
+		  cursor: pointer;
+		}
+		.animate--shrink.animate .panel {
+		  transform: scale(0.9);
+		}
+		.animate--tilt.animate .panel {
+		  transform: scale(0.6) rotateY(-25deg);
+		}
+		.animate--tilt2.animate .panel {
+		  transform: scale(0.8) rotateX(25deg);
+		}
+		.panel h1 {
+		  cursor: default;
+		  left: 50%;
+		  line-height: 1;
+		  position: absolute;
+		  text-align: center;
+		  top: 50%;
+		  transform: translateX(-50%) translateY(-50%);
+		  user-select: none;
+		}
+		.panel[data-x-pos="-2"] {
+		  left: -200%;
+		}
+		.panel[data-x-pos="-1"] {
+		  left: -100%;
+		}
+		.panel[data-x-pos="1"] {
+		  left: 100%;
+		}
+		.panel[data-x-pos="2"] {
+		  left: 200%;
+		}
+		.panel[data-y-pos="-2"] {
+		  top: 200%;
+		}
+		.panel[data-y-pos="-1"] {
+		  top: 100%;
+		}
+		.panel[data-y-pos="1"] {
+		  top: -100%;
+		}
+		.panel[data-y-pos="2"] {
+		  top: -200%;
+		}
+		.panel__zoom {
+		  cursor: pointer;
+		  left: 50%;
+		  opacity: 0.2;
+		  position: absolute;
+		  top: 50%;
+		  transform: translateX(-50%) translateY(-50%) translateY(-12vmin);
+		  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		  user-select: none;
+		  z-index: 10;
+		}
+		.panel__zoom:hover {
+		  opacity: 1;
+		}
+		.show-all .panel__zoom {
+		  pointer-events: none;
+		}
+		.panel__nav {
+		  cursor: pointer;
+		  opacity: 0.2;
+		  position: absolute;
+		  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		  user-select: none;
+		  will-change: opacity;
+		}
+		.panel__nav--up {
+		  left: 50%;
+		  top: 1rem;
+		  transform: translateX(-50%);
+		}
+		.panel__nav--left {
+		  left: 1rem;
+		  top: 50%;
+		  transform: translateY(-50%) rotate(-90deg) translateX(-100%);
+		  transform-origin: top left;
+		}
+		.panel__nav--left-top {
+		  left: 1rem;
+		  top: 1rem;
+		}
+		.panel__nav--left-down {
+		  bottom: 1rem;
+		  left: 1rem;
+		}
+		.panel__nav--right {
+		  right: 1rem;
+		  top: 50%;
+		  transform: translateY(-50%) rotate(90deg) translateX(100%);
+		  transform-origin: top right;
+		}
+		.panel__nav--right-top {
+		  right: 1rem;
+		  top: 1rem;
+		}
+		.panel__nav--right-down {
+		  bottom: 1rem;
+		  right: 1rem;
+		}
+		.panel__nav--down {
+		  bottom: 1rem;
+		  left: 50%;
+		  transform: translateX(-50%);
+		}
+		.panel__nav:hover {
+		  opacity: 1;
+		}
+		.panel__animation-list {
+		  font-size: 3.3vmin;
+		  left: 50%;
+		  position: absolute;
+		  top: 50%;
+		  transform: translateX(-50%) translateY(-50%) translateY(14vmin);
+		}
+		.panel__animation-list span {
+		  cursor: pointer;
+		  display: inline-block;
+		  opacity: 0.2;
+		  position: relative;
+		  transition: opacity 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		  user-select: none;
+		}
+		.panel__animation-list span:after {
+		  border-bottom: 0.3vmin solid transparent;
+		  bottom: 0;
+		  content: "";
+		  left: -1px;
+		  position: absolute;
+		  right: 0;
+		  transition: border-color 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+		  width: 100%;
+		}
+		.panel__animation-list span.active,
+		.panel__animation-list span:hover {
+		  opacity: 1;
+		}
+		.panel__animation-list span.active:after,
+		.panel__animation-list span:hover:after {
+		  border-color: white;
+		}
+	</style>
+	
+</head>
+<body>
+	<div class="site-wrap">
+	  <div class="panel-wrap animate--none">
+		<div class="panel" data-x-pos="0"  data-y-pos="0">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <span class="panel__nav panel__nav--right-top js-up js-right">up/right</span>
+		  <span class="panel__nav panel__nav--left-top js-up js-left">up/left</span>
+		  <span class="panel__nav panel__nav--left js-left">left</span>
+		  <span class="panel__nav panel__nav--right js-right">right</span>
+		  <span class="panel__nav panel__nav--right-down js-down js-right">down/right</span>
+		  <span class="panel__nav panel__nav--left-down js-down js-left">down/left</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <span class="panel__zoom js-zoom">View All</span>
+		  <h1>Main</h1>
+		  <div class="panel__animation-list">
+			<span class="js-animation active" data-animation="animate--none">None</span>
+			<span class="js-animation" data-animation="animate--shrink">Shrink</span>
+			<span class="js-animation" data-animation="animate--tilt">Tilt</span>
+			<span class="js-animation" data-animation="animate--tilt2">Tilt-2</span>
+		  </div>
+		</div>
+		<div class="panel" data-x-pos="0"  data-y-pos="1">
+		  <span class="panel__nav panel__nav--left js-left">left</span>
+		  <span class="panel__nav panel__nav--right js-right">right</span>
+		  <span class="panel__nav panel__nav--right-down js-down js-right">down/right</span>
+		  <span class="panel__nav panel__nav--left-down js-down js-left">down/left</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <h1>Up</h1>
+		</div>
+		<div class="panel" data-x-pos="-1"  data-y-pos="1">
+		  <span class="panel__nav panel__nav--right-down js-down js-right">down/right</span>
+		  <span class="panel__nav panel__nav--right js-right">right</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <h1>Up Left</h1>
+		</div>
+		<div class="panel" data-x-pos="1"  data-y-pos="1">
+		  <span class="panel__nav panel__nav--left-down js-down js-left">down/left</span>
+		  <span class="panel__nav panel__nav--left js-left">left</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <h1>Up Right</h1>
+		</div>
+		<div class="panel" data-x-pos="-1"  data-y-pos="0">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <span class="panel__nav panel__nav--right-top js-up js-right">up/right</span>
+		  <span class="panel__nav panel__nav--right js-right">right</span>
+		  <span class="panel__nav panel__nav--right-down js-down js-right">down/right</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <h1>Left</h1>
+		</div>
+		<div class="panel" data-x-pos="-1"  data-y-pos="-1">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <span class="panel__nav panel__nav--right-top js-up js-right">up/right</span>
+		  <span class="panel__nav panel__nav--right js-right">right</span>
+		  <h1>Down Left</h1>
+		</div>
+		<div class="panel" data-x-pos="1"  data-y-pos="-1">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <span class="panel__nav panel__nav--left-top js-up js-left">up/left</span>
+		  <span class="panel__nav panel__nav--left js-left">left</span>
+		  <h1>Down Right</h1>
+		</div>
+		<div class="panel" data-x-pos="1"  data-y-pos="0">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <span class="panel__nav panel__nav--left-top js-up js-left">up/left</span>
+		  <span class="panel__nav panel__nav--left js-left">left</span>
+		  <span class="panel__nav panel__nav--left-down js-down js-left">down/left</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <h1>Right</h1>
+		</div>
+		<div class="panel" data-x-pos="0"  data-y-pos="-1">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <span class="panel__nav panel__nav--left-top js-up js-left">up/left</span>
+		  <span class="panel__nav panel__nav--right-top js-up js-right">up/right</span>
+		  <span class="panel__nav panel__nav--left js-left">left</span>
+		  <span class="panel__nav panel__nav--right js-right">right</span>
+		  <span class="panel__nav panel__nav--down js-down">down</span>
+		  <h1>Down</h1>
+		</div>
+		<div class="panel" data-x-pos="0"  data-y-pos="-2">
+		  <span class="panel__nav panel__nav--up js-up">up</span>
+		  <h1>Down 2</h1>
+		</div>
+	  </div>
+	</div>
+	<script>
+		// Global
+		var win = window,
+			doc = document;
+
+		// Global Functions
+
+		function hasClass(el, cls) {
+		  return el.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+		};
+
+		function addClass(el, cls) {
+		  if (!this.hasClass(el, cls)) {
+			el.className += " " + cls;
+		  }
+		};
+
+		function removeClass(el, cls) {
+		  if (this.hasClass(el, cls)) {
+
+			var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+			el.className = el.className.replace(reg,' ');
+		  }
+		};
+
+		// Elements
+
+		var site = doc.getElementsByClassName('site-wrap')[0];
+		var wrap = doc.getElementsByClassName('panel-wrap')[0];
+
+		var panel = doc.getElementsByClassName('panel');
+
+		var zoom = doc.getElementsByClassName('js-zoom');
+
+		var nav_up = doc.getElementsByClassName('js-up'),
+			nav_left = doc.getElementsByClassName('js-left'),
+			nav_right = doc.getElementsByClassName('js-right'),
+			nav_down = doc.getElementsByClassName('js-down');
+
+		var animation = doc.getElementsByClassName('js-animation');
+
+		// Tracking
+		var pos_x = 0,
+			pos_y = 0;
+
+		function setPos(){
+		  wrap.style.transform = 'translateX(' + pos_x + '00%) translateY(' + pos_y + '00%)';
+		  setTimeout( function(){
+			removeClass(wrap, 'animate');
+		  }, 600);
+		}
+
+		setPos();
+
+		function moveUp(){
+		  addClass(wrap, 'animate');
+		  pos_y++;
+		  setPos();
+		}
+
+		function moveLeft(){
+		  addClass(wrap, 'animate');
+		  pos_x++;
+		  setPos();
+		}
+
+		function moveRight(){
+		  addClass(wrap, 'animate');
+		  pos_x--;
+		  setPos();
+		}
+
+		function moveDown(){
+		  addClass(wrap, 'animate');
+		  pos_y--;
+		  setPos();
+		}
+
+		for (var x = 0; x < nav_up.length; x++){
+		  nav_up[x].addEventListener('click', moveUp);
+		}
+
+		for (var x = 0; x < nav_left.length; x++){
+		  nav_left[x].addEventListener('click', moveLeft);
+		}
+
+		for (var x = 0; x < nav_right.length; x++){
+		  nav_right[x].addEventListener('click', moveRight);
+		}
+
+		for (var x = 0; x < nav_down.length; x++){
+		  nav_down[x].addEventListener('click', moveDown);
+		}
+
+		// Animations
+
+		for (var x = 0; x < animation.length; x++){
+		  ( function(_x){
+			animation[_x].addEventListener('click', function(){
+			  toggleAnimation(_x);
+			});
+		  })(x);
+		}
+
+		function toggleAnimation(i){
+		  for (var x = 0; x < animation.length; x++){
+			if (i === x){
+			  addClass(animation[x], 'active');
+			  addClass(wrap, animation[x].getAttribute('data-animation'));
+			} else {
+			  removeClass(animation[x], 'active');
+			  removeClass(wrap, animation[x].getAttribute('data-animation'));
+			}
+		  }
+		  
+		}
+
+		for (var x = 0; x < zoom.length; x++){
+		  zoom[x].addEventListener('click', zoomOut);   
+		}
+
+		function zoomOut(e){
+		  e.stopPropagation();
+		  addClass(site, 'show-all');
+		  for (var x = 0; x < panel.length; x++){
+			( function(_x){
+			  panel[_x].addEventListener('click', setPanelAndZoom);
+			})(x);
+		  }
+		}
+
+		function setPanelAndZoom(e){
+		  pos_x = -e.target.getAttribute('data-x-pos'),
+		  pos_y = e.target.getAttribute('data-y-pos');
+		  setPos();
+		  zoomIn();
+		}
+
+
+		function zoomIn(){
+		  for (var x = 0; x < panel.length; x++){
+			panel[x].removeEventListener('click', setPanelAndZoom);
+		  }
+		  removeClass(site, 'show-all');
+		}
+	</script>
+</body>
+</html>

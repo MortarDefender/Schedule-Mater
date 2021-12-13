@@ -1,0 +1,369 @@
+<!doctype html>
+<html>
+<head>
+	<title>Table Style</title>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"> -->
+	<!-- background-color: #3e94ec; -->
+	<style>
+		@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+
+		body {
+		  background-color: #0b8793;
+		  font-family: "Roboto", helvetica, arial, sans-serif;
+		  font-size: 16px;
+		  font-weight: 400;
+		  text-rendering: optimizeLegibility;
+		}
+
+		div.table-title {
+			display: block;
+			margin: auto;
+			max-width: 50%;
+			padding:5px;
+			width: 100%;
+		}
+
+		.table-title h3 {
+		   color: #fafafa;
+		   font-size: 30px;
+		   font-weight: 400;
+		   font-style: normal;
+		   text-align: center;
+		   font-family: "Roboto", helvetica, arial, sans-serif;
+		   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+		   text-transform:uppercase;
+		}
+
+
+		/*** Table Styles **/
+
+		.table-fill {
+		  background: white;
+		  border-radius:3px;
+		  border-collapse: collapse;
+		  height: 320px;
+		  margin: auto;
+		  max-width: 80%;
+		  padding:5px;
+		  width: 100%;
+		  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+		  animation: float 5s infinite;
+		}
+		 
+		th {
+		  color:#D5DDE5;;
+		  background:#1b1e24;
+		  border-bottom:4px solid #9ea7af;
+		  border-right: 1px solid #343a45;
+		  font-size:23px;
+		  font-weight: 100;
+		  padding:24px;
+		  text-align:left;
+		  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		  vertical-align:middle;
+		}
+
+		th:first-child {
+		  border-top-left-radius:3px;
+		}
+		 
+		th:last-child {
+		  border-top-right-radius:3px;
+		  border-right:none;
+		}
+		  
+		tr {
+		  border-top: 1px solid #C1C3D1;
+		  border-bottom-: 1px solid #C1C3D1;
+		  color:#666B85;
+		  font-size:16px;
+		  font-weight:normal;
+		  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+		}
+		 
+		tr:hover td {
+		  background:#4E5066;
+		  color:#FFFFFF;
+		  border-top: 1px solid #22262e;
+		}
+		 
+		tr:first-child {
+		  border-top:none;
+		}
+
+		tr:last-child {
+		  border-bottom:none;
+		}
+		 
+		tr:nth-child(odd) td {
+		  background:#EBEBEB;
+		}
+		 
+		tr:nth-child(odd):hover td {
+		  background:#4E5066;
+		}
+
+		tr:last-child td:first-child {
+		  border-bottom-left-radius:3px;
+		}
+		 
+		tr:last-child td:last-child {
+		  border-bottom-right-radius:3px;
+		}
+		 
+		td {
+		  background:#FFFFFF;
+		  padding:20px;
+		  text-align:left;
+		  vertical-align:middle;
+		  font-weight:300;
+		  font-size:18px;
+		  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+		  border-right: 1px solid #C1C3D1;
+		}
+
+		td:last-child {
+		  border-right: 0px;
+		}
+
+		th.text-left {
+		  text-align: left;
+		}
+
+		th.text-center {
+		  text-align: center;
+		}
+
+		th.text-right {
+		  text-align: right;
+		}
+
+		td.text-left {
+		  text-align: left;
+		}
+
+		td.text-center {
+		  text-align: center;
+		}
+
+		td.text-right {
+		  text-align: right;
+		}
+		
+		#menuToggle {
+			  display: block;
+			  position: fixed;
+			  top: 20px;
+			  left: 20px;
+			  
+			  z-index: 1;
+			  
+			  -webkit-user-select: none;
+			  user-select: none;
+			}
+
+			#menuToggle a{
+			  text-decoration: none;
+			  color: #232323;
+			  
+			  transition: color 0.3s ease;
+			}
+
+			#menuToggle a:hover{
+			  color: tomato;
+			}
+
+
+			#menuToggle input{
+			  display: block;
+			  width: 40px;
+			  height: 32px;
+			  position: absolute;
+			  top: -7px;
+			  left: -5px;
+			  
+			  cursor: pointer;
+			  
+			  opacity: 0; /* hide this */
+			  z-index: 2; /* and place it over the hamburger */
+			  
+			  -webkit-touch-callout: none;
+			}
+
+			#menuToggle span{
+			  display: block;
+			  width: 33px;
+			  height: 4px;
+			  margin-bottom: 5px;
+			  position: relative;
+			  
+			  background: #cdcdcd;
+			  border-radius: 3px;
+			  
+			  z-index: 1;
+			  
+			  transform-origin: 4px 0px;
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+						  opacity 0.55s ease;
+			}
+
+			#menuToggle span:first-child{
+			  transform-origin: 0% 0%;
+			}
+
+			#menuToggle span:nth-last-child(2){
+			  transform-origin: 0% 100%;
+			}
+
+			#menuToggle input:checked ~ span{
+			  opacity: 1;
+			  transform: rotate(45deg) translate(-2px, -1px);
+			  background: #232323;
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(3){
+			  opacity: 0;
+			  transform: rotate(0deg) scale(0.2, 0.2);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(2){
+			  transform: rotate(-45deg) translate(0, -1px);
+			}
+			#menu{
+			  position: absolute;
+			  width: 300px;
+			  margin: -100px 0 0 -50px;
+			  padding: 50px;
+			  padding-top: 125px;
+			  
+			  background: #ededed;
+			  list-style-type: none;
+			  -webkit-font-smoothing: antialiased;
+			  /* to stop flickering of text in safari */
+			  
+			  transform-origin: 0% 0%;
+			  transform: translate(-100%, 0);
+			  
+			  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#menu li{
+			  padding: 10px 0;
+			  font-size: 22px;
+			}
+
+			#menuToggle input:checked ~ ul{
+			  transform: none;
+			}
+			
+			.fa-cogs{
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				font-size:30px;
+				color: white;
+			}
+			
+			.swal2-input{
+				font-size: 18px;
+				max-height: 36px;
+			}
+			
+			body.swal2-shown > [aria-hidden="true"] {
+			 filter: blur(10px);
+			}
+
+			body > * {
+				 transition: 0.1s filter linear;
+			}
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script>
+		async function sidemenu(){
+			Swal.fire({
+			  title: '<h4 style="text-decoration: underline;">Table Settings:</h4>',
+			  html: '<form method="post" action="{{ url_for("admin.log") }}">' +
+					'<label style="color: black; font-size: 16px;"> Start Date:</label><input class="swal2-input" type="date" name="start_date" style="color: black;">' +
+					'<label style="color: black; font-size: 16px;"> End Date:</label><input class="swal2-input" type="date" name="end_date" style="color: black;">' +
+					'<label style="color: black; font-size: 16px;"> Start Time:</label><input class="swal2-input" type="time" name="start_time" style="color: black;">' +
+					'<label style="color: black; font-size: 16px;"> End Time:</label><input class="swal2-input" type="time" name="end_time" style="color: black;">' +
+					'<label style="color: black; font-size: 16px;"> Command:</label><select name="command" class="swal2-input" style="color: black;"><option value="" style="color: black;">Pick a Command</option>{% for option in options %}<option value="{{ option }}" style="color: black;">{{ option }}</option>{% endfor %}</select>' +
+					'<label style="color: black; font-size: 16px;"> Username:</label><select name="username" class="swal2-input" style="color: black;"><option value="" style="color: black;">Pick a Username</option>{% for user in users %}<option value="{{ user["username"] }}" style="color: black;">{{ user["username"] }}</option>{% endfor %}</select>' +
+					<!-- '<label style="color: black; font-size: 16px;"> User Id:</label><select name="user_id" class="swal2-input" style="color: black;">{% for user in users %}<option value="{{ user["id"] }}" style="color: black;">{{ user["id"] }}</option>{% endfor %}</select>' + -->
+					'<input class="swal2-input" type="submit" value="Send" style="background: #0575E6; color: white;"></form>',
+			  position: 'top-end',
+			  showClass: {
+				popup: `
+				  animate__animated
+				  animate__fadeInRight
+				  animate__faster
+				`
+			  },
+			  hideClass: {
+				popup: `
+				  animate__animated
+				  animate__fadeOutRight
+				  animate__faster
+				`
+			  },
+			  grow: 'column',
+			  width: 300,
+			  showConfirmButton: false,
+			  showCloseButton: true
+			})
+		}
+	</script>
+</head>
+<body>
+	<nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('admin.index') }}"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin Page</li></a>
+		  <a href="{{ url_for('admin.users') }}"><li><i class="fa fa-users" style="font-size:24px;"></i>  Users</li></a>
+		  <a href="{{ url_for('admin.schedule') }}"><li><i class="fa fa-list-alt" aria-hidden="true" style="font-size:24px;"></i>  Schedule</li></a>
+		  <a href="{{ url_for('admin.settings') }}"><li><i class="fa fa-cog" aria-hidden="true" style="font-size:24px;"></i>  Settings</li></a>
+		  <a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+		</ul>
+	  </div>
+	</nav>
+	
+	<i class="fa fa-cogs" aria-hidden="true" onclick="sidemenu()"></i>
+	
+	<div class="table-title">
+		<h3><i class="fa fa-file-text-o" aria-hidden="true" style="font-size:30px;"></i> Log Table</h3>
+	</div>
+	<table class="table-fill">
+		<thead>
+			<tr>
+				{% for title in head %}
+					<th class="text-left">{{ title }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody class="table-hover">
+			{% for i in index %}
+				<tr>
+					<td class="text-left">{{ i }}</td>
+					<td class="text-left">{{ log[i-1][0] }}</td>
+					<td class="text-left">{{ log[i-1][1] }}</td>
+					<td class="text-left">{{ log[i-1][2] }}</td>
+					<td class="text-left">{{ log[i-1][3] }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+  
+</body>
+</html>

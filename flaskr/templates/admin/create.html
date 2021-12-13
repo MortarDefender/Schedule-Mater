@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='lst.ico') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<title> Create User </title>
+	<style>
+		html{
+			background-image: linear-gradient(#000046, #1CB5E0);
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+		}
+		
+		input[type=text], select {
+		  width: 60%;
+		  padding: 12px 20px;
+		  margin: 8px 0;
+		  display: inline-block;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		  box-sizing: border-box;
+		}
+
+		input[type=submit] {
+		  width: 60%;
+		  background-color: #aa4b6b;
+		  color: white;
+		  padding: 14px 20px;
+		  margin: 8px 0;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		}
+		
+		form{
+			position: relative;
+			top: 15%;
+			left: 27%;
+			width: 73%;
+			height: 92vh;
+			color: white;
+		}
+		
+		hr{
+		    border: none; 
+			border-top: 1px solid lightgrey;
+			width: 55%;
+		}
+		
+		#menuToggle {
+		  display: block;
+		  position: fixed;
+		  top: 20px;
+		  left: 20px;
+		  
+		  z-index: 1;
+		  
+		  -webkit-user-select: none;
+		  user-select: none;
+		}
+
+		#menuToggle a{
+		  text-decoration: none;
+		  color: #232323;
+		  
+		  transition: color 0.3s ease;
+		}
+
+		#menuToggle a:hover{
+		  color: tomato;
+		}
+
+
+		#menuToggle input{
+		  display: block;
+		  width: 40px;
+		  height: 32px;
+		  position: absolute;
+		  top: -7px;
+		  left: -5px;
+		  
+		  cursor: pointer;
+		  
+		  opacity: 0; /* hide this */
+		  z-index: 2; /* and place it over the hamburger */
+		  
+		  -webkit-touch-callout: none;
+		}
+
+		#menuToggle span{
+		  display: block;
+		  width: 33px;
+		  height: 4px;
+		  margin-bottom: 5px;
+		  position: relative;
+		  
+		  background: #cdcdcd;
+		  border-radius: 3px;
+		  
+		  z-index: 1;
+		  
+		  transform-origin: 4px 0px;
+		  
+		  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+					  background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+					  opacity 0.55s ease;
+		}
+
+		#menuToggle span:first-child{
+		  transform-origin: 0% 0%;
+		}
+
+		#menuToggle span:nth-last-child(2){
+		  transform-origin: 0% 100%;
+		}
+
+		#menuToggle input:checked ~ span{
+		  opacity: 1;
+		  transform: rotate(45deg) translate(-2px, -1px);
+		  background: #232323;
+		}
+
+		#menuToggle input:checked ~ span:nth-last-child(3){
+		  opacity: 0;
+		  transform: rotate(0deg) scale(0.2, 0.2);
+		}
+		
+		#menuToggle input:checked ~ span:nth-last-child(2){
+		  transform: rotate(-45deg) translate(0, -1px);
+		}
+		#menu{
+		  position: absolute;
+		  width: 300px;
+		  margin: -100px 0 0 -50px;
+		  padding: 50px;
+		  padding-top: 125px;
+		  
+		  background: #ededed;
+		  list-style-type: none;
+		  -webkit-font-smoothing: antialiased;
+		  /* to stop flickering of text in safari */
+		  
+		  transform-origin: 0% 0%;
+		  transform: translate(-100%, 0);
+		  
+		  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+		}
+
+		#menu li{
+		  padding: 10px 0;
+		  font-size: 22px;
+		}
+
+		#menuToggle input:checked ~ ul{
+		  transform: none;
+		}
+	</style>
+</head>
+<body>
+	<nav role="navigation">
+	  <div id="menuToggle">
+		<input type="checkbox" />
+		<span></span>
+		<span></span>
+		<span></span>
+		<ul id="menu">
+		  <a href="{{ url_for('home.index') }}"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+		  <a href="{{ url_for('admin.index') }}"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin Page</li></a>
+		  <a href="{{ url_for('admin.users') }}"><li><i class="fa fa-users" style="font-size:24px;"></i>  Users</li></a>
+		  <a href="{{ url_for('admin.settings') }}"><li><i class="fa fa-cog" aria-hidden="true" style="font-size:24px;"></i>  Settings</li></a>
+		  {% if g.user['rank'] == 0 %}
+			<a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-file-text-o" aria-hidden="true" style="font-size:24px;"></i>  Log File</li></a>
+		  {% endif %}
+		  <a href="{{ url_for('auth.logout') }}"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+		</ul>
+	  </div>
+	</nav>
+	
+	<h2 style="text-align:center; color:white;" >New User: </h2>
+	<hr>
+	
+	<div>
+	  <form method="post">
+		<label for="username"<i class="fa fa-user-circle-o"></i>  Username</label><br>
+		<input type="text" id="username"  placeholder="username.. " required><br>
+		<label for="lname"><i class="fa fa-key"></i>  Password</label><br>
+		<input type="text" id="password" name="password" placeholder="password.. "><br>
+		<label for="rank"><i class="fa fa-angle-double-up"></i>  Permission</label><br>
+		<select id="rank" name="rank" required>
+		  <option value="user">User</option>
+		  <option value="admin">Admin</option>
+		</select>
+		<input type="submit" value="Save">
+	  </form>
+	</div>
+
+</body>
+</html>
